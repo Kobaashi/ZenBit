@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Post, Body, Res, BadRequestException } from '@nestjs/common';
+import { Controller, Get, Param, Post, Body, Res, Request, BadRequestException } from '@nestjs/common';
 import { AuthService } from './auth.service.js';
 import { RegisterDto } from './dto/register.dto.js';
 import type { Response } from 'express';
@@ -36,7 +36,7 @@ export class AuthController {
     const token = await this.authService.login(body.user_email, body.user_password);
     
     response.cookie('jwt', token, {
-      httpOnly: true, 
+      httpOnly: false, 
       sameSite: 'strict',
       maxAge: 7 * 24 * 60 * 60 * 1000,
       path: '/',
@@ -55,4 +55,11 @@ export class AuthController {
     });
     return { message: 'Вихід виконано успішно' };
   }
+
+  @Get('user-token')
+  async getUserToken(@Request() req) {
+    const token = req.cookies?.jwt;
+    return { token: token || null }; 
+  }
+
 }

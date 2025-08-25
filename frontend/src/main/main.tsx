@@ -2,35 +2,44 @@ import city from "../assets/city.png";
 import {
     Link,
 } from 'react-router-dom';
+import { useState, useEffect } from "react";
 
-const isActive: boolean = false
+function getJwtFromCookie(): string | null {
+  const match = document.cookie.match(/jwt=([^;]+)/);
+  return match ? match[1] : null;
+}
 
 
 export function Main() {
-  const authButtons = isActive ? (
-    <div className="navmenu-button h-[80px] bg-[#172234]">
-      <button className="font-Merriweather text-white border-[#B29F7E] bg-[#B29F7E] border-[1px] w-[160px] h-[44px] my-[18px] ml-[1250px] font-bold text-[16px] tracking-[0px] leading-[22px] rounded-[5px] cursor-pointer hover:bg-[#172234] hover:text-[#B29F7E] transition duraction-300">
-        Log Out
-      </button>
-    </div>
-  ) : (
-    <div className="navmenu h-[80px] bg-[#172234]">
-      <Link to="/login">
-          <button className="navmenu-button font-Merriweather text-white border-[#B29F7E] bg-[#B29F7E] border-[1px] w-[160px] h-[44px] my-[18px] ml-[1100px] font-bold text-[16px] tracking-[0px] leading-[22px] rounded-[5px] cursor-pointer hover:bg-[#172234] hover:text-[#B29F7E] transition duraction-300">
-            Log In
-          </button>
-      </Link>
-      <Link to="/register">
-          <button className="navmenu-button font-Merriweather text-white border-[#B29F7E] bg-[#B29F7E] border-[1px] w-[160px] h-[44px] my-[18px] ml-[10px] font-bold text-[16px] tracking-[0px] leading-[22px] rounded-[5px] cursor-pointer hover:bg-[#172234] hover:text-[#B29F7E] transition duraction-300">
-            Sign Up
-          </button>
-      </Link>
-    </div>
-  );
+  const [token, setToken] = useState<string | null>(null);
+
+  useEffect(() => {
+    setToken(getJwtFromCookie());
+  }, []);
 
   return (
     <>
-      {authButtons}
+      <div className="navmenu h-[80px] bg-[#172234]">
+        {token ? (
+          <button className="navmenu-button font-Merriweather text-white border-[#B29F7E] bg-[#B29F7E] border-[1px] w-[160px] h-[44px] my-[18px] ml-[1250px] font-bold text-[16px] tracking-[0px] leading-[22px] rounded-[5px] cursor-pointer hover:bg-[#172234] hover:text-[#B29F7E] transition duraction-300">
+            Log Out
+          </button>
+        ) : (
+          <>
+            <Link to="/login">
+              <button className="navmenu-button font-Merriweather text-white border-[#B29F7E] bg-[#B29F7E] border-[1px] w-[160px] h-[44px] my-[18px] ml-[1100px] font-bold text-[16px] tracking-[0px] leading-[22px] rounded-[5px] cursor-pointer hover:bg-[#172234] hover:text-[#B29F7E] transition duraction-300">
+                Log In
+              </button>
+            </Link>
+            <Link to="/register">
+              <button className="navmenu-button font-Merriweather text-white border-[#B29F7E] bg-[#B29F7E] border-[1px] w-[160px] h-[44px] my-[18px] ml-[10px] font-bold text-[16px] tracking-[0px] leading-[22px] rounded-[5px] cursor-pointer hover:bg-[#172234] hover:text-[#B29F7E] transition duraction-300">
+                Sign Up
+              </button>
+            </Link>
+          </>
+        )}
+      </div>
+
       <div className="container">
         <div className="container-img">
           <img src={city} alt="city" className="w-full h-[1024px] brightness-50"/>
@@ -52,4 +61,5 @@ export function Main() {
     </>
   );
 }
+
 
