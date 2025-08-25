@@ -1,10 +1,15 @@
-import anothercity  from "../assets/AnotherCity.png"
-import { useState } from "react";
+import anothercity  from "../assets/AnotherCity.png";
+import { useState, useEffect } from "react";
 import {
     Link,
 } from 'react-router-dom';
+import { environment } from "../environment/backend";
 
 export function Login() {
+
+  useEffect(() => {
+
+  }, [])
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
