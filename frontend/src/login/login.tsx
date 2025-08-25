@@ -1,31 +1,39 @@
 import anothercity  from "../assets/AnotherCity.png";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import {
     Link,
 } from 'react-router-dom';
 import { environment } from "../environment/backend";
+import { useNavigate } from "react-router-dom";
 
 export function Login() {
 
-  useEffect(() => {
-
-  }, [])
-
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [user_email, setUser_Email] = useState("");
+  const [user_password, setUser_Password] = useState("");
   const [error, setError] = useState("");
+  const navigate = useNavigate();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!email || !password) {
-      setError("Please fill in all fields");
-      return;
+    try {
+      const res = await fetch(`${environment.apiUrl}/auth/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ user_email, user_password }),
+        credentials: "include",
+      });
+
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || "Login failed");
+
+      console.log("Login successful, token:", data.token);
+      navigate("/deals")
+    } catch (err: any) {
+      alert(err.message);
     }
-
-    setError("");
-    console.log("Logging in with:", { email, password });
-
   };
 
   return(<>
@@ -42,16 +50,16 @@ export function Login() {
             <input
               type="email"
               placeholder="Email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              value={user_email}
+              onChange={(e) => setUser_Email(e.target.value)}
               className="p-3 rounded-md border border-gray-400 focus:outline-none focus:ring-2 focus:ring-[#B29F7E]"
             />
              <h3 className="font-Merriweather font-bold text-[14px] leading-[20px] -mb-[10px]">Password</h3>
             <input
               type="password"
               placeholder="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              value={user_password}
+              onChange={(e) => setUser_Password(e.target.value)}
               className="p-3 rounded-md border border-gray-400 focus:outline-none focus:ring-2 focus:ring-[#B29F7E]"
             />
             <p className="text-[#B29F7E] cursor-pointer ml-[240px] mb-[20px] text-center">
