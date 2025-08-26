@@ -17,11 +17,26 @@ export function Main() {
     setToken(getJwtFromCookie());
   }, []);
 
+  async function handleLogout() {
+    try {
+      const res = await fetch("http://localhost:3000/auth/logout", {
+        method: "POST",
+        credentials: "include", 
+      });
+      if (res.ok) {
+        setToken(null); 
+      }
+    } catch (err) {
+      console.error("Помилка при виході:", err);
+    }
+  }
+
+
   return (
     <>
       <div className="navmenu h-[80px] bg-[#172234]">
         {token ? (
-          <button className="navmenu-button font-Merriweather text-white border-[#B29F7E] bg-[#B29F7E] border-[1px] w-[160px] h-[44px] my-[18px] ml-[1250px] font-bold text-[16px] tracking-[0px] leading-[22px] rounded-[5px] cursor-pointer hover:bg-[#172234] hover:text-[#B29F7E] transition duraction-300">
+          <button onClick={handleLogout} className="navmenu-button font-Merriweather text-white border-[#B29F7E] bg-[#B29F7E] border-[1px] w-[160px] h-[44px] my-[18px] ml-[1250px] font-bold text-[16px] tracking-[0px] leading-[22px] rounded-[5px] cursor-pointer hover:bg-[#172234] hover:text-[#B29F7E] transition duraction-300">
             Log Out
           </button>
         ) : (
