@@ -8,7 +8,7 @@ const __dirname = path.dirname(__filename);
 
 dotenv.config({ path: path.resolve(__dirname, "../../.env") });
 
-console.log("DB_URL:", process.env.DB_URL);
+console.log("DB_URL:", process.env.DATABASE_URL);
 
 const prisma = new PrismaClient();
 
