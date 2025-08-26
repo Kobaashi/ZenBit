@@ -32,7 +32,7 @@ export function Login() {
       console.log("Login successful, token:", data.token);
       navigate("/deals")
     } catch (err: any) {
-      alert(err.message);
+      setError(err.message); 
     }
   };
 
