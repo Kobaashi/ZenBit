@@ -1,7 +1,7 @@
 
 # ZenBit
 
-Frontend - React
+Frontend - React (TypeScript)
 Backend - Nets
 Data Base - PostgreSQL
 ORM - Prisma
